@@ -1,0 +1,35 @@
+- hosts: at
+  vars:
+    http_port: 80
+    root_dir: /var/tmp/www
+
+  tasks:
+    - name: install nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+
+    - name: create rootdir
+      ansible.builtin.file:
+        path: /var/tmp/www
+        state: directory
+
+    - name: copy index.html
+      ansible.builtin.template:
+        src: ./index.html
+        dest: "{{root_dir}}/index.html"
+      notify:
+        - restart nginx
+
+    - name: update nginx.conf
+      ansible.builtin.template:
+        src: templates/nginx.conf.j2
+        dest: /etc/nginx/nginx.conf
+      notify:
+        - restart nginx
+
+  handlers:
+    - name: restart nginx
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded

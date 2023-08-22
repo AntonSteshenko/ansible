@@ -1,0 +1,34 @@
+- hosts: at1
+
+  tasks:
+    - name: apt update
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: install git
+      ansible.builtin.apt:
+        name: git
+        state: present
+
+    - name: install nodejs
+      ansible.builtin.apt:
+        name: nodejs
+        state: present
+
+    - name: create user arya
+      ansible.builtin.user:
+        name: atya
+        state: present
+      tags: create_users
+
+    - name: create user sansa
+      ansible.builtin.user:
+        name: sansa
+        state: present
+      tags: create_users
+
+    - name: create user tirion
+      ansible.builtin.user:
+        name: tirion
+        state: present
+      tags: create_users
